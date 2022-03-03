@@ -54,6 +54,52 @@ def home(request):
     content_dict = {'variants': data_list}
     return render(request, "dbsnp_app/home.html", content_dict)
 
+
+def results(request):
+    search_dict = {}
+
+    if request.GET.get('exact'):
+        try:
+            if request.GET['chrom'] is not None:    
+                search_dict.update({"mappings.seq_region_name": request.GET['chrom']})
+        except: pass
+        if request.GET['start'] is not None and request.GET['start'] != "":
+            search_dict.update({"mappings.start": int(request.GET['start'])})
+        if request.GET['end'] is not None and request.GET['end'] != "":
+            search_dict.update({"mappings.end": int(request.GET['end'])})
+        try:
+            if request.GET['vartype'] is not None:
+                search_dict.update({"var_class": request.GET['vartype']})
+        except: pass
+        try:
+            if request.GET['conseq'] is not None:
+                search_dict.update({"most_severe_consequence": request.GET['conseq']})
+        except: pass
+        try:
+            if request.GET['clinsig'] is not None:
+                search_dict.update({"clinical_significance": request.GET['clinsig']})
+        except: pass
+
+    elif request.GET.get('range'):
+        try:
+            if request.GET['range_chr'] is not None:
+                search_dict.update({"mappings.0.seq_region_name": request.GET['range_chr']})
+        except: pass
+        if request.GET['range_start'] is not None and request.GET['range_start'] != "" and \
+            request.GET['range_end'] is not None and request.GET['range_end'] != "":
+            search_dict.update({"mappings.start": { "$gte": int(request.GET['range_start'])},
+            "mappings.end": { "$lte": int(request.GET['range_end'])}})
+
+    try:
+        if request.GET['limit'] is not None and request.GET['limit'] != "":
+            limit = int(request.GET['limit'])
+    except:
+        limit = 20
+
+    data_list = query_db(search_dict, limit)
+    content_dict = {'variants': data_list}
+    return render(request, "dbsnp_app/results.html", content_dict)
+
 # Available fields based on the first 200 records
 # {'_id': <class 'bson.objectid.ObjectId'>,
 # 'MAF': <class 'str'>, 'ambiguity': <class 'str'>, 'ancestral_allele': <class 'str'>,
