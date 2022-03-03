@@ -37,12 +37,19 @@ def home(request):
         pass
     try: 
         if request.GET['MAF'] is not None:
-           search_dict.update({"MAF": request.GET['MAF']})
+            low = request.GET['MAF'].split("-")[0]
+            high = request.GET['MAF'].split("-")[1]
+            search_dict.update({"MAF": { "$lte": high, "$gte": low } })
     except:
         pass
     try: 
         if request.GET['varClass'] is not None:
            search_dict.update({"var_class": request.GET['varClass']})
+    except:
+        pass
+    try: 
+        if request.GET['conseq'] is not None:
+           search_dict.update({"most_severe_consequence": request.GET['conseq']})
     except:
         pass
 
