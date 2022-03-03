@@ -23,8 +23,37 @@ def index(request):
 
 def home(request):
     data_list = []
-    variant_records = collection_handle.find().limit(22)
-    # Print on the terminal
+    search_dict = {}
+
+    try:
+        if request.GET['chromosomes'] is not None:
+           search_dict.update({"mappings.0.seq_region_name": request.GET['chromosomes']})
+    except:
+        pass    
+    try: 
+        if request.GET['clinSig'] is not None:
+           search_dict.update({"clinical_significance": request.GET['clinSig']})
+    except:
+        pass
+    try: 
+        if request.GET['MAF'] is not None:
+            low = request.GET['MAF'].split("-")[0]
+            high = request.GET['MAF'].split("-")[1]
+            search_dict.update({"MAF": { "$lte": high, "$gte": low } })
+    except:
+        pass
+    try: 
+        if request.GET['varClass'] is not None:
+           search_dict.update({"var_class": request.GET['varClass']})
+    except:
+        pass
+    try: 
+        if request.GET['conseq'] is not None:
+           search_dict.update({"most_severe_consequence": request.GET['conseq']})
+    except:
+        pass
+
+    variant_records = collection_handle.find(search_dict).limit(22)    # Print on the terminal
     for i, r in enumerate(variant_records):
         # if i == 10: break
         data_list.append({
