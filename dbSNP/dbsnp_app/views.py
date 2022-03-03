@@ -22,9 +22,17 @@ def index(request):
 
 def chromosomeChoice(request):
     data_list = []
-    chrom = request.GET['chromosomes']
-    variant_records = collection_handle.find({"mappings.0.seq_region_name": chrom}).limit(22)
+    search_dict = {}
+
+    if request.GET['chromosomes'] is not None:
+        search_dict.update({"mappings.0.seq_region_name": request.GET['chromosomes']})
+    if request.GET['clinSig'] is not None:
+        search_dict.update({"clinical_significance": request.GET['clinSig']})
     
+
+    variant_records = collection_handle.find(search_dict).limit(22)
+    
+
     for i, r in enumerate(variant_records):
         # if i == 10: break
         data_list.append({
@@ -43,8 +51,17 @@ def chromosomeChoice(request):
 
 def home(request):
     data_list = []
-    variant_records = collection_handle.find().limit(22)
-    # Print on the terminal
+    search_dict = {}
+
+    try:
+        if request.GET['chromosomes'] is not None:
+           search_dict.update({"mappings.0.seq_region_name": request.GET['chromosomes']})
+        if request.GET['clinSig'] is not None:
+           search_dict.update({"clinical_significance": request.GET['clinSig']})
+    except:
+        pass
+
+    variant_records = collection_handle.find(search_dict).limit(22)    # Print on the terminal
     for i, r in enumerate(variant_records):
         # if i == 10: break
         data_list.append({

@@ -17,7 +17,7 @@ Homepage
 <h1>Database of single nucleotide variants</h1>
 
 <label for="chromosomes">Choose a chromosome:</label>
-<form action="{% url 'chrom' %}" method="get">
+<form action="{% url 'home' %}" method="get">
 	<select name="chromosomes" id="chromosomes">
 		<option selected="selected" disabled>Select chromosome:</option>
 			<option value="1">1</option>
@@ -45,9 +45,21 @@ Homepage
 			<option value="X">X</option>
 			<option value="Y">Y</option>
 	</select>
+	<select name="clinSig" id="clinSig">
+		<option selected="selected" disabled>Select clinical significance:</option>
+			<option value="pathogenic">pathogenic</option>
+			<option value="likely pathogenic">likely pathogenic</option>
+			<option value="uncertain significance">uncertain significance</option>
+			<option value="likely benign">likely benign</option>
+			<option value="benign">benign</option>
+			<option value="risk factor">risk factor</option>
+			<option value="not provided">not provided</option>
+	</select>
 	<button type="submit" class="save btn btn-default">Search</button>
 </form>>
 
+
+<!-- <button type="submit" class="save btn btn-default">Search</button> -->
 
 <!-- <a href="/submit/"><button type="button" class = "bt btn-primary">Submit new</button></a></br></br> -->
 
