@@ -20,14 +20,14 @@
 	<body>
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 			<div class="container">
-				<a class="navbar-brand" href="{% url 'base' %}">Other databases</a>
+				<a class="navbar-brand" href="{% url 'home' %}">Homepage</a>
 			</div>
 		</nav>
 		
 		<div style="padding-left: 30px" id="content", name="content"> <!--not quite sure what this does -->
 			{% block content %}
 				<h1>This is a base page </h1>
-				<p>Hopefully something useful will come here evenetually</p>
+				<p>Hopefully something useful will come here eventually</p>
 				<p>{{this}}</p>
 			{% endblock %}
 
@@ -51,7 +51,7 @@
 
 
 		{% block home-button %}
-		<a href="{% url 'base' %}"><button type="button" name = "home" class = "bt btn-primary">Back to database selection</button></a>
+		<a href="{% url 'home' %}"><button type="button" name = "home" class = "bt btn-primary">Back to database selection</button></a>
 		{% endblock %}
 		</div>
 

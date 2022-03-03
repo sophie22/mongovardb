@@ -5,3 +5,4 @@ dbSNP/dbsnp_project/config.py
 dbSNP/dbsnp_app/credentials.py
 dbSNP/dbsnp_app/__pycache__/*.pyc
 dbSNP/dbsnp_project/__pycache__/*.pyc
+dbSNP/dbsnp_app/migrations/__pycache__/__init__.cpython-37.pyc
