@@ -16,17 +16,9 @@ Homepage
 {% block content %}
 <h1>Database of single nucleotide variants (GRCh38)</h1>
 
-<form action="{% url 'results' %}" method="get">
-	<input name="chr" type="text" placeholder="chr">
-  </form>
-
-  <form action="{% url 'results' %}" method="get">
-	<input name="start" type="text" placeholder="start">
-  </form>
-
-  <form action="{% url 'results' %}" method="get">
-	<input name="end" type="text" placeholder="end">
-  </form>
+<!-- <body>
+<p>{{ number_variants }}</p>
+</body> -->
 
 {% endblock %}
 
