@@ -20,6 +20,26 @@ collection_handle = db_handle[collection]
 def index(request):
     return HttpResponse("Hello, world. You're at the index page.")
 
+def chromosomeChoice(request):
+    data_list = []
+    chrom = request.GET['chromosomes']
+    variant_records = collection_handle.find({"mappings.0.seq_region_name": chrom}).limit(22)
+    
+    for i, r in enumerate(variant_records):
+        # if i == 10: break
+        data_list.append({
+            'dbSNP_ID': r['name'],
+            'refGen': r['mappings'][0]['assembly_name'],
+            'chr': r['mappings'][0]['seq_region_name'],
+            'start': r['mappings'][0]['start'],
+            'end': r['mappings'][0]['end'],
+            'ref': r['ancestral_allele'],
+            'alt': r['minor_allele'],
+            'MAF': r['MAF'],
+            'var_class': r['var_class']
+        })
+    content_dict = {'variants': data_list}
+    return render(request, "dbsnp_app/chrom.html", content_dict)
 
 def home(request):
     data_list = []
