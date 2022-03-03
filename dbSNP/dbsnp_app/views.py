@@ -57,38 +57,55 @@ def home(request):
 
 def results(request):
     search_dict = {}
+    filter_str = ""
 
     if request.GET.get('exact'):
         try:
-            if request.GET['chrom'] is not None:    
+            if request.GET['chrom'] is not None:
                 search_dict.update({"mappings.seq_region_name": request.GET['chrom']})
+                filter_str += "chromosome: " + request.GET['chrom'] + ", "
         except: pass
         if request.GET['start'] is not None and request.GET['start'] != "":
             search_dict.update({"mappings.start": int(request.GET['start'])})
+            filter_str += "start position: " + request.GET['start'] + ", "
         if request.GET['end'] is not None and request.GET['end'] != "":
             search_dict.update({"mappings.end": int(request.GET['end'])})
+            filter_str += "end position: " + request.GET['end'] + ", "
         try:
             if request.GET['vartype'] is not None:
                 search_dict.update({"var_class": request.GET['vartype']})
+                filter_str += "variant type: " + request.GET['vartype'] + ", "
         except: pass
         try:
             if request.GET['conseq'] is not None:
                 search_dict.update({"most_severe_consequence": request.GET['conseq']})
+                filter_str += "consequence: " + request.GET['conseq'] + ", "
         except: pass
         try:
             if request.GET['clinsig'] is not None:
                 search_dict.update({"clinical_significance": request.GET['clinsig']})
+                filter_str += "clinical significance: " + request.GET['clinsig'] + ", "
         except: pass
 
     elif request.GET.get('range'):
         try:
             if request.GET['range_chr'] is not None:
                 search_dict.update({"mappings.0.seq_region_name": request.GET['range_chr']})
+                filter_str += "chromosome: " + request.GET['range_chr'] + ", "
         except: pass
         if request.GET['range_start'] is not None and request.GET['range_start'] != "" and \
             request.GET['range_end'] is not None and request.GET['range_end'] != "":
             search_dict.update({"mappings.start": { "$gte": int(request.GET['range_start'])},
             "mappings.end": { "$lte": int(request.GET['range_end'])}})
+            filter_str += "starting from: " + request.GET['range_start'] + ", "
+            filter_str += "ending until: " + request.GET['range_end'] + ", "
+        try: # MAF value is a string, so this does not actually work!!
+            if request.GET['MAF'] is not None:
+                low = request.GET['MAF'].split("-")[0]
+                high = request.GET['MAF'].split("-")[1]
+                search_dict.update({"minor_allele_frequency": { "$gte": low , "$lte": high}})
+                filter_str += "MAF between: " + request.GET['MAF'] + ", "
+        except: pass
 
     try:
         if request.GET['limit'] is not None and request.GET['limit'] != "":
@@ -97,7 +114,7 @@ def results(request):
         limit = 20
 
     data_list = query_db(search_dict, limit)
-    content_dict = {'variants': data_list}
+    content_dict = {'filters': filter_str, 'variants': data_list}
     return render(request, "dbsnp_app/results.html", content_dict)
 
 # Available fields based on the first 200 records
