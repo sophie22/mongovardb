@@ -54,7 +54,7 @@ def filter(request):
     int_start = int(user_start)
     int_end = int(user_end)
 
-    variant_records = collection_handle.find({"mappings.0.start": int_start,"mappings.0.end": int_end, "mappings.0.seq_region_name": user_chr}).limit(22)
+    variant_records = collection_handle.find({"mappings.0.start": { "$gte": int_start }, "mappings.0.end": { "$lte": int_end}, "mappings.0.seq_region_name": user_chr}).limit(22)
     #variant_records = collection_handle.find({"mappings.0.start": int_start}).limit(22)
     # Print on the terminal
     for i, r in enumerate(variant_records):
