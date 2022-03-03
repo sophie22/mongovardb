@@ -17,29 +17,42 @@ db_handle = client[database]
 collection_handle = db_handle[collection]
 
 
-def index(request):
-    return HttpResponse("Hello, world. You're at the index page.")
+def query_db(search_dict, limit):
+    data_list = []
+    variant_records = collection_handle.find(search_dict).limit(limit)
+    # Print on the terminal
+    for i, record in enumerate(variant_records):
+        # if i == 10: break
+        if 'clinical_significance' not in record.keys():
+            clinsig = None
+        else:
+            clinsig = ', '.join(record['clinical_significance'])
+
+        data_list.append({
+            'dbSNP_ID': record['name'],
+            'refGen': record['mappings'][0]['assembly_name'],
+            'chr': record['mappings'][0]['seq_region_name'],
+            'start': record['mappings'][0]['start'],
+            'end': record['mappings'][0]['end'],
+            'ref': record['ancestral_allele'],
+            'alt': record['minor_allele'],
+            'MAF': record['MAF'],
+            'var_class': record['var_class'],
+            'clin_sig': clinsig,
+            'consequence': record['most_severe_consequence'],
+            'evidence': ', '.join(record['evidence']),
+            'synonyms': record['synonyms']
+        })
+    return data_list
 
 
 def home(request):
-    data_list = []
-    variant_records = collection_handle.find().limit(22)
-    # Print on the terminal
-    for i, r in enumerate(variant_records):
-        # if i == 10: break
-        data_list.append({
-            'dbSNP_ID': r['name'],
-            'refGen': r['mappings'][0]['assembly_name'],
-            'chr': r['mappings'][0]['seq_region_name'],
-            'start': r['mappings'][0]['start'],
-            'end': r['mappings'][0]['end'],
-            'ref': r['ancestral_allele'],
-            'alt': r['minor_allele'],
-            'MAF': r['MAF'],
-            'var_class': r['var_class']
-        })
+    search_dict = {}
+    limit = 20
+
+    data_list = query_db(search_dict, limit)
     content_dict = {'variants': data_list}
-    return render(request, "dbsnp_app/home.html", content_dict)	
+    return render(request, "dbsnp_app/home.html", content_dict)
 
 # Available fields based on the first 200 records
 # {'_id': <class 'bson.objectid.ObjectId'>,
