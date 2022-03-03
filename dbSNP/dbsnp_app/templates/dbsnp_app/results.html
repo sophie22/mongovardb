@@ -2,7 +2,7 @@
 {% extends 'dbsnp_app/template.html' %} <!-- template inheritance -->
 
 {% block title %}
-Home
+Filtering
 {% endblock %}
 
 {% if messages %}
@@ -18,8 +18,6 @@ Home
 <h4>for the following query:</h4>
 <p>{{ filters }}</p>
 
-<!-- <a href="/submit/"><button type="button" class = "bt btn-primary">Submit new</button></a></br></br> -->
-
 <br>
 <form action="{% url 'results' %}" method="get">
 <input name="limit" type="text" placeholder="Limit results">
@@ -27,5 +25,3 @@ Home
 <br>
 
 {% endblock %}
-
-<!-- <a href="{% url 'home' %}"><button type="button" name = "home" class = "bt btn-primary">Back to database selection</button></a> -->
