@@ -14,18 +14,11 @@ Homepage
 {% endif %} 
 
 {% block content %}
-<h1>Database of single nucleotide variants (GRCh38)</h1>
 
-<form action="{% url 'results' %}" method="get">
-	<input name="chr" type="text" placeholder="chr"><br>
-	<input name="start" type="text" placeholder="start"><br>
-	<input name="end" type="text" placeholder="end"><br>
-
-	<button type="submit" class="save btn btn-default">Submit</button>
-</form>
+<h1>Database of single nucleotide variants</h1>
 
 <label for="chromosomes">Choose a chromosome:</label>
-<form action="{% url 'home' %}" method="get">
+<form action="{% url 'chrom' %}" method="get">
 	<select name="chromosomes" id="chromosomes">
 		<option selected="selected" disabled>Select chromosome:</option>
 			<option value="1">1</option>
@@ -53,36 +46,9 @@ Homepage
 			<option value="X">X</option>
 			<option value="Y">Y</option>
 	</select>
-	<select name="clinSig" id="clinSig">
-		<option selected="selected" disabled>Select clinical significance:</option>
-			<option value="pathogenic">pathogenic</option>
-			<option value="likely pathogenic">likely pathogenic</option>
-			<option value="uncertain significance">uncertain significance</option>
-			<option value="likely benign">likely benign</option>
-			<option value="benign">benign</option>
-			<option value="risk factor">risk factor</option>
-			<option value="not provided">not provided</option>
-	</select>
-	<select name="MAF" id="MAF">
-		<option selected="selected" disabled>Select MAF range:</option>
-			<option value="0.00-0.25">0.00-0.25</option>
-			<option value="0.25-0.75">0.25-0.75</option>
-			<option value="0.75-1.00">0.75-1.00</option>
-	</select>
-	<select name="varClass" id="varClass">
-		<option selected="selected" disabled>Select variant class:</option>
-			<option value="SNP">SNP</option>
-			<option value="deletion">deletion</option>
-			<option value="insertion">insertion</option>
-	</select>
-	<select name="conseq" id="conseq">
-		<option selected="selected" disabled>Select consequence:</option>
-			<option value="intron_variant">intron_variant</option>
-			<option value="exon_variant">exon_variant</option>
-			<option value="*">*</option>
-	</select>
 	<button type="submit" class="save btn btn-default">Search</button>
-</form>
+</form>>
+
 
 {% endblock %}
 
@@ -91,10 +57,10 @@ Homepage
 <thead class="thead-inverse">
 	<tr> <!--define header-->
 		<th >Variant ID</th>
-		<!-- <th >Reference genome</th> -->
-		<th >Chr</th>
-		<th >Start</th>
-		<th >End</th>
+		<th >Reference genome</th>
+		<th >Chromosome</th>
+		<th >Start coordinate</th>
+		<th >End coordinate</th>
 		<th >Reference allele</th>
 		<th >Alternative allele</th>
 		<th >Minor allele frequency</th>
@@ -106,7 +72,7 @@ Homepage
 	{% for variant in variants %} <!-- create a new row for each variant submitted  -->
 	<tr> 	<!--'variants' is the key in the content dictionary provided in the views.py -->
 		<td><a href="https://www.ncbi.nlm.nih.gov/snp/{{variant.dbSNP_ID}}">{{ variant.dbSNP_ID }}</a></td>
-		<!-- <td>{{ variant.refGen }}</td> -->
+		<td>{{ variant.refGen }}</td>
 		<td>{{ variant.chr }}</td>
 		<td>{{ variant.start }}</td>
 		<td>{{ variant.end }}</td>
