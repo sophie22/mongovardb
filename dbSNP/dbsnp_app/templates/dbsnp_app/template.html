@@ -20,7 +20,7 @@
 	<body>
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 			<div class="container">
-				<a class="navbar-brand" href="{% url 'home' %}">Homepage</a>
+				<a class="navbar-brand" href="{% url 'home' %}">Variant database</a>
 			</div>
 		</nav>
 		
@@ -35,23 +35,52 @@
 		{% endblock %}
 
 		{% block table %}
-		<table style="width:80%" class="table table-striped table-sm table-responsive">
-			<thead class="thead-inverse"> <!--define header-->
-				{% for h in header_list %} 
-				<th class="th-lg"> {{h}} </th>
-				{% endfor %}
+			<table style="width:98%" class="table table-striped table-sm table-responsive">
+			<thead class="thead-inverse">
+				<tr> <!--define header-->
+					<!-- <th >Reference genome</th> -->
+					<th >Chromosome</th>
+					<th >Start</th>
+					<th >End</th>
+					<th >Reference</th>
+					<th >Alternative</th>
+					<th >Variant type</th>
+					<th >Consequence</th>
+					<th >Synonyms</th>
+					<th >MAF</th>
+					<th >Clinical significance</th>
+					<th >Evidence sources</th>
+					<th >Variant ID</th>
+					<th >External links</th>
+				</tr>
 			</thead>
 			<tbody>
-				{% for n in content_list %} 
-				<td class="align-middle"> {{n}} </td>
-				{% endfor %}
+				{% for variant in variants %} <!-- create a new row for each variant submitted  -->
+				<tr> 	<!--'variants' is the key in the content dictionary provided in the views.py -->
+					<!-- <td>{{ variant.refGen }}</td> -->
+					<td>{{ variant.chr }}</td>
+					<td>{{ variant.start }}</td>
+					<td>{{ variant.end }}</td>
+					<td>{{ variant.ref }}</td>
+					<td>{{ variant.alt }}</td>
+					<td>{{ variant.var_class }}</td>
+					<td>{{ variant.consequence }}</td>
+					<td>{% for syn in variant.synonyms %}
+						{{syn}}<br>{% endfor %}</td>
+					<td>{{ variant.MAF }}</td>
+					<td>{{ variant.clin_sig }}</td>
+					<td>{{ variant.evidence }}</td>
+					<td><a href="https://www.ncbi.nlm.nih.gov/snp/{{variant.dbSNP_ID}}">{{ variant.dbSNP_ID }}</a></td>
+					<td><a href="https://genome-euro.ucsc.edu/cgi-bin/hgTracks?db=hg38&lastVirtModeType=default&lastVirtModeExtraState=&virtModeType=default&virtMode=0&nonVirtPosition=&position=chr{{variant.chr}}%3A{{variant.start}}-{{variant.end}}">UCSC</a> , <a href="https://gnomad.broadinstitute.org/variant/{{ variant.chr }}-{{ variant.start }}-{{variant.ref}}-{{variant.alt}}?dataset=gnomad_r3">gnomAD</a></td>
+				</tr>
+				{% endfor %}  <!-- always have to close for loops in HTML -->
 			</tbody>
-		</table>
+			</table>
 		{% endblock %}
 
 
 		{% block home-button %}
-		<a href="{% url 'home' %}"><button type="button" name = "home" class = "bt btn-primary">Back to database selection</button></a>
+			<a href="{% url 'home' %}"><button type="button" name = "home" class = "bt btn-primary">Back to overview</button></a>
 		{% endblock %}
 		</div>
 
