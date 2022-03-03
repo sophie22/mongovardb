@@ -20,34 +20,6 @@ collection_handle = db_handle[collection]
 def index(request):
     return HttpResponse("Hello, world. You're at the index page.")
 
-def chromosomeChoice(request):
-    data_list = []
-    search_dict = {}
-
-    if request.GET['chromosomes'] is not None:
-        search_dict.update({"mappings.0.seq_region_name": request.GET['chromosomes']})
-    if request.GET['clinSig'] is not None:
-        search_dict.update({"clinical_significance": request.GET['clinSig']})
-    
-
-    variant_records = collection_handle.find(search_dict).limit(22)
-    
-
-    for i, r in enumerate(variant_records):
-        # if i == 10: break
-        data_list.append({
-            'dbSNP_ID': r['name'],
-            'refGen': r['mappings'][0]['assembly_name'],
-            'chr': r['mappings'][0]['seq_region_name'],
-            'start': r['mappings'][0]['start'],
-            'end': r['mappings'][0]['end'],
-            'ref': r['ancestral_allele'],
-            'alt': r['minor_allele'],
-            'MAF': r['MAF'],
-            'var_class': r['var_class']
-        })
-    content_dict = {'variants': data_list}
-    return render(request, "dbsnp_app/chrom.html", content_dict)
 
 def home(request):
     data_list = []
@@ -56,8 +28,21 @@ def home(request):
     try:
         if request.GET['chromosomes'] is not None:
            search_dict.update({"mappings.0.seq_region_name": request.GET['chromosomes']})
+    except:
+        pass    
+    try: 
         if request.GET['clinSig'] is not None:
            search_dict.update({"clinical_significance": request.GET['clinSig']})
+    except:
+        pass
+    try: 
+        if request.GET['MAF'] is not None:
+           search_dict.update({"MAF": request.GET['MAF']})
+    except:
+        pass
+    try: 
+        if request.GET['varClass'] is not None:
+           search_dict.update({"var_class": request.GET['varClass']})
     except:
         pass
 
