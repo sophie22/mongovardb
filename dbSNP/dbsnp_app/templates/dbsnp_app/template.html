@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+{% load static %}
+<meta charset="UTF-8">
+<style type="text/css">
+	table, th, td {
+		border: 1px solid black;
+		border-collapse: collapse;
+		vertical-align: middle;
+		text-align: center;
+	}
+</style>
+
+<html>
+	<head>
+		<title>{% block title %} title {% endblock %}</title>
+	
+		<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+	</head>
+
+	<body>
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<div class="container">
+				<a class="navbar-brand" href="{% url 'base' %}">Other databases</a>
+			</div>
+		</nav>
+		
+		<div style="padding-left: 30px" id="content", name="content"> <!--not quite sure what this does -->
+			{% block content %}
+				<h1>This is a base page </h1>
+				<p>Hopefully something useful will come here evenetually</p>
+				<p>{{this}}</p>
+			{% endblock %}
+
+		{% block description %}
+		{% endblock %}
+
+		{% block table %}
+		<table style="width:80%" class="table table-striped table-sm table-responsive">
+			<thead class="thead-inverse"> <!--define header-->
+				{% for h in header_list %} 
+				<th class="th-lg"> {{h}} </th>
+				{% endfor %}
+			</thead>
+			<tbody>
+				{% for n in content_list %} 
+				<td class="align-middle"> {{n}} </td>
+				{% endfor %}
+			</tbody>
+		</table>
+		{% endblock %}
+
+
+		{% block home-button %}
+		<a href="{% url 'base' %}"><button type="button" name = "home" class = "bt btn-primary">Back to database selection</button></a>
+		{% endblock %}
+		</div>
+
+	</body>
+</html>
