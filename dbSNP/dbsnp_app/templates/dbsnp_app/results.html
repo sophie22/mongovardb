@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+{% extends 'dbsnp_app/template.html' %} <!-- template inheritance -->
+
+{% block title %}
+Home
+{% endblock %}
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert {{message.tags}}">
+            <strong>{{ message }}</strong> 
+        </div>
+    {% endfor %}
+{% endif %} 
+
+{% block content %}
+<h1>Filtering results</h1>
+
+<!-- <a href="/submit/"><button type="button" class = "bt btn-primary">Submit new</button></a></br></br> -->
+
+<br>
+<form action="{% url 'results' %}" method="get">
+<input name="limit" type="text" placeholder="Limit results">
+</form>
+<br>
+
+{% endblock %}
+
+<!-- <a href="{% url 'home' %}"><button type="button" name = "home" class = "bt btn-primary">Back to database selection</button></a> -->
