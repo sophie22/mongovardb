@@ -18,15 +18,13 @@ Homepage
 
 <form action="{% url 'results' %}" method="get">
 	<input name="chr" type="text" placeholder="chr">
-  </form>
-
-  <form action="{% url 'results' %}" method="get">
 	<input name="start" type="text" placeholder="start">
+	<input name="end" type="text" placeholder="end">
+
+	<button type="submit" class="save btn btn-default">Submit</button>
   </form>
 
-  <form action="{% url 'results' %}" method="get">
-	<input name="end" type="text" placeholder="end">
-  </form>
+
 
 {% endblock %}
 
