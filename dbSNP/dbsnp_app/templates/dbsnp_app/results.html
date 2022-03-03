@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+{% extends 'dbsnp_app/template.html' %} <!-- template inheritance -->
+
+{% block title %}
+Homepage
+{% endblock %}
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert {{message.tags}}">
+            <strong>{{ message }}</strong> 
+        </div>
+    {% endfor %}
+{% endif %} 
+
+{% block content %}
+<h1>Result of search</h1>
+
+<!-- <body>
+<p>{{ number_variants }}</p>
+</body> -->
+
+{% endblock %}
+
+{% block table %}
+<table style="width:98%" class="table table-striped table-sm table-responsive">
+<thead class="thead-inverse">
+	<tr> <!--define header-->
+		<th >Variant ID</th>
+		<!-- <th >Reference genome</th> -->
+		<th >Chr</th>
+		<th >Start</th>
+		<th >End</th>
+		<th >Reference allele</th>
+		<th >Alternative allele</th>
+		<th >Minor allele frequency</th>
+		<th >Variant class</th>
+		<th >External links</th>
+	</tr>
+</thead>
+<tbody>
+	{% for variant in variants %} <!-- create a new row for each variant submitted  -->
+	<tr> 	<!--'variants' is the key in the content dictionary provided in the views.py -->
+		<td><a href="https://www.ncbi.nlm.nih.gov/snp/{{variant.dbSNP_ID}}">{{ variant.dbSNP_ID }}</a></td>
+		<!-- <td>{{ variant.refGen }}</td> -->
+		<td>{{ variant.chr }}</td>
+		<td>{{ variant.start }}</td>
+		<td>{{ variant.end }}</td>
+		<td>{{ variant.ref }}</td>
+		<td>{{ variant.alt }}</td>
+		<td>{{ variant.MAF }}</td>
+		<td>{{ variant.var_class }}</td>
+		<td><a href="https://genome-euro.ucsc.edu/cgi-bin/hgTracks?db=hg38&lastVirtModeType=default&lastVirtModeExtraState=&virtModeType=default&virtMode=0&nonVirtPosition=&position=chr{{variant.chr}}%3A{{variant.start}}-{{variant.end}}">UCSC</a> , <a href="https://gnomad.broadinstitute.org/variant/{{ variant.chr }}-{{ variant.start }}-{{variant.ref}}-{{variant.alt}}?dataset=gnomad_r3">gnomAD</a></td>
+	</tr>
+	{% endfor %}  <!-- always have to close for loops in HTML -->
+</tbody>
+</table>
+{% endblock %}
+
+{% block home-button %}
+{% endblock %}

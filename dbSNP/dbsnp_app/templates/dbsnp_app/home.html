@@ -14,7 +14,15 @@ Homepage
 {% endif %} 
 
 {% block content %}
-<h1>Database of single nucleotide variants</h1>
+<h1>Database of single nucleotide variants (GRCh38)</h1>
+
+<form action="{% url 'results' %}" method="get">
+	<input name="chr" type="text" placeholder="chr"><br>
+	<input name="start" type="text" placeholder="start"><br>
+	<input name="end" type="text" placeholder="end"><br>
+
+	<button type="submit" class="save btn btn-default">Submit</button>
+</form>
 
 <label for="chromosomes">Choose a chromosome:</label>
 <form action="{% url 'home' %}" method="get">
@@ -76,11 +84,6 @@ Homepage
 	<button type="submit" class="save btn btn-default">Search</button>
 </form>
 
-
-<!-- <button type="submit" class="save btn btn-default">Search</button> -->
-
-<!-- <a href="/submit/"><button type="button" class = "bt btn-primary">Submit new</button></a></br></br> -->
-
 {% endblock %}
 
 {% block table %}
@@ -88,10 +91,10 @@ Homepage
 <thead class="thead-inverse">
 	<tr> <!--define header-->
 		<th >Variant ID</th>
-		<th >Reference genome</th>
-		<th >Chromosome</th>
-		<th >Start coordinate</th>
-		<th >End coordinate</th>
+		<!-- <th >Reference genome</th> -->
+		<th >Chr</th>
+		<th >Start</th>
+		<th >End</th>
 		<th >Reference allele</th>
 		<th >Alternative allele</th>
 		<th >Minor allele frequency</th>
@@ -103,7 +106,7 @@ Homepage
 	{% for variant in variants %} <!-- create a new row for each variant submitted  -->
 	<tr> 	<!--'variants' is the key in the content dictionary provided in the views.py -->
 		<td><a href="https://www.ncbi.nlm.nih.gov/snp/{{variant.dbSNP_ID}}">{{ variant.dbSNP_ID }}</a></td>
-		<td>{{ variant.refGen }}</td>
+		<!-- <td>{{ variant.refGen }}</td> -->
 		<td>{{ variant.chr }}</td>
 		<td>{{ variant.start }}</td>
 		<td>{{ variant.end }}</td>

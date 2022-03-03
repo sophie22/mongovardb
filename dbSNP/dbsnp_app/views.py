@@ -58,7 +58,7 @@ def home(request):
         # if i == 10: break
         data_list.append({
             'dbSNP_ID': r['name'],
-            'refGen': r['mappings'][0]['assembly_name'],
+            # 'refGen': r['mappings'][0]['assembly_name'],
             'chr': r['mappings'][0]['seq_region_name'],
             'start': r['mappings'][0]['start'],
             'end': r['mappings'][0]['end'],
@@ -68,7 +68,53 @@ def home(request):
             'var_class': r['var_class']
         })
     content_dict = {'variants': data_list}
-    return render(request, "dbsnp_app/home.html", content_dict)	
+    return render(request, "dbsnp_app/home.html", content_dict)
+
+def filter(request):
+    
+    data_list = []
+
+    # getting search query from home page
+    user_chr = request.GET.get("chr")
+    user_start = request.GET.get("start")
+    user_end = request.GET.get("end")
+
+    if user_start == "":
+        user_start = "0"
+
+    if user_end == "":
+        user_end = "248956422"
+
+    # converting to integer to search
+    int_start = int(user_start)
+    int_end = int(user_end)
+
+
+    variant_records = collection_handle.find({"mappings.0.start": { "$gte": int_start }, "mappings.0.end": { "$lte": int_end}, "mappings.0.seq_region_name": user_chr}).limit(22)
+    #variant_records = collection_handle.find({"mappings.0.start": int_start}).limit(22)
+    # Print on the terminal
+    for i, r in enumerate(variant_records):
+        # if i == 10: break
+        data_list.append({
+            'dbSNP_ID': r['name'],
+            # 'refGen': r['mappings'][0]['assembly_name'],
+            'chr': r['mappings'][0]['seq_region_name'],
+            'start': r['mappings'][0]['start'],
+            'end': r['mappings'][0]['end'],
+            'ref': r['ancestral_allele'],
+            'alt': r['minor_allele'],
+            'MAF': r['MAF'],
+            'var_class': r['var_class']
+        })
+    content_dict = {'variants': data_list}
+
+    number_variants = len(content_dict)
+
+    #content = {'table': content_dict, 'number': number_variants}
+
+    return render(request, "dbsnp_app/results.html", content_dict)
+
+
 
 # Available fields based on the first 200 records
 # {'_id': <class 'bson.objectid.ObjectId'>,
