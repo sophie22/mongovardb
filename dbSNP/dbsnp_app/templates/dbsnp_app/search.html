@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+{% extends 'main/template.html' %} <!-- template inheritance -->
+<meta charset="UTF-8">
+
+{% block title %}
+Filter variants
+{% endblock %}
+
+{% block content %}
+<h1>Filter variants</h1>
+{% endblock %}
+
+{% block form %}
+<form method="POST" enctype="multipart/form-data">
+	{% csrf_token %}	
+	<label for="file2"> Upload a file</label>
+    <input type="file" id="file2" name="json_file"><br></br>
+    <small>Only accepts JSON files</small>
+	<button type="submit" class="btn btn-success" name="submit">Filter</button>
+</form>
+<form action="{% url 'home' %}" method="get">
+    <input name="q" type="text" placeholder="Search by patient...">
+    <button type="submit" class="save btn btn-default">Search</button>
+</form>
+<label for="chromosomes">Choose a chromosome:</label>
+<select name="chromosomes" id="chromosomes">
+    <option selected="selected" disabled>Select chromosome:</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+        <option value="11">11</option>
+        <option value="12">12</option>
+        <option value="13">13</option>
+        <option value="14">14</option>
+        <option value="15">15</option>
+        <option value="16">16</option>
+        <option value="17">17</option>
+        <option value="18">18</option>
+        <option value="19">19</option>
+        <option value="20">20</option>
+        <option value="21">21</option>
+        <option value="22">22</option>
+        <option value="X">X</option>
+        <option value="Y">Y</option>
+</select>
+{% endblock %}
+
+{% block table %}
+{% endblock %}
+
+{% block home-button %}
+{% endblock %}

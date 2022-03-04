@@ -103,7 +103,7 @@ def results(request):
             if request.GET['MAF'] is not None:
                 low = request.GET['MAF'].split("-")[0]
                 high = request.GET['MAF'].split("-")[1]
-                search_dict.update({"minor_allele_frequency": { "$gte": low , "$lte": high}})
+                search_dict.update({"MAF": { "$gte": low , "$lte": high}})
                 filter_str += "MAF between: " + request.GET['MAF'] + ", "
         except: pass
 
@@ -116,6 +116,11 @@ def results(request):
     data_list = query_db(search_dict, limit)
     content_dict = {'filters': filter_str, 'variants': data_list}
     return render(request, "dbsnp_app/results.html", content_dict)
+
+
+def visualisation(request):
+    content_dict = {}
+    return render(request, "dbsnp_app/visualisation.html", content_dict)
 
 # Available fields based on the first 200 records
 # {'_id': <class 'bson.objectid.ObjectId'>,
