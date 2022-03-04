@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .utils import connect_mongo
+from django.template import loader
 # import pandas as pd
 
 ### Import database and collection information
@@ -63,7 +64,7 @@ def results(request):
         try:
             if request.GET['chrom'] is not None:
                 search_dict.update({"mappings.seq_region_name": request.GET['chrom']})
-                filter_str += "chromosome: " + request.GET['chrom'] + ", "
+                filter_str += "Chromosome: " + request.GET['chrom'] + ", "
         except: pass
         if request.GET['start'] is not None and request.GET['start'] != "":
             search_dict.update({"mappings.start": int(request.GET['start'])})
@@ -116,3 +117,8 @@ def results(request):
     data_list = query_db(search_dict, limit)
     content_dict = {'filters': filter_str, 'variants': data_list}
     return render(request, "dbsnp_app/results.html", content_dict)
+
+def help(request):
+    template = loader.get_template('dbsnp_app/help.html')
+    context = {}
+    return HttpResponse(template.render(context, request))

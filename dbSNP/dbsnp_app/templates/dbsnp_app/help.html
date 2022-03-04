@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+
+{% load static %}
+<html>
+    <head>
+		<title>{% block title %} Help {% endblock %}</title>
+	
+		<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+	</head>
+
+	<body>
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<div class="container">
+				<a class="navbar-brand" href="{% url 'home' %}">Return to main table</a>
+			</div>
+		</nav>
+
+    <h1>Help! I don't know how to search!</h1>
+
+    <h2>To search for a variant/variants:</h2>
+    <img src="{% static 'media/exact_match.png' %}" alt="home" />
+</html>
