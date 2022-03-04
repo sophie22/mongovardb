@@ -116,17 +116,3 @@ def results(request):
     data_list = query_db(search_dict, limit)
     content_dict = {'filters': filter_str, 'variants': data_list}
     return render(request, "dbsnp_app/results.html", content_dict)
-
-# Available fields based on the first 200 records
-# {'_id': <class 'bson.objectid.ObjectId'>,
-# 'MAF': <class 'str'>, 'ambiguity': <class 'str'>, 'ancestral_allele': <class 'str'>,
-# 'minor_allele': <class 'str'>, 'most_severe_consequence': <class 'str'>,
-# 'name': <class 'str'>, 'source': <class 'str'>, 'var_class': <class 'str'>, 'failed': <class 'str'>
-# 'evidence': <class 'list of strings of length 0-3'>, 'synonyms': <class 'list of strings of length 1-6'>,
-#  'mappings': <class 'list of length 1 containing a dict'>}
-
-# ['mappings'][0] fields:
-# {'location': <class 'str'>, 'assembly_name': <class 'str'>, 'end': <class 'int'>,
-# 'seq_region_name': <class 'str'>, 'strand': <class 'int'>, 'coord_system': <class 'str'>,
-# 'allele_string': <class 'str'>, 'start': <class 'int'>}
-

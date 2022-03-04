@@ -7,4 +7,3 @@ urlpatterns = [
 	path("results/", views.results, name="results"),
 
 ]
-
